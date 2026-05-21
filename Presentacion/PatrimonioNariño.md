@@ -64,7 +64,14 @@ Se ha seleccionado la **Arquitectura Hexagonal (Puertos y Adaptadores)** para ai
 ### Diagrama de Componentes
 ![Arquitectura Hexagonal](arquitectura_hexagonal_componentes.svg)
 
-**¿Cómo resuelve la tensión?**
+**¿Cómo resuelve la tensión?
+El núcleo del dominio contiene la lógica de negocio: qué es una manifestación cultural, sus campos locales y sus reglas de validación propias. Los adaptadores traducen hacia afuera (LRPCI) y reciben desde afuera (app móvil).
+
+```text
+[App Móvil] ──► Puerto de Entrada ──► [DOMINIO: FichaPatrimonial] ──► Puerto de Salida ──► [Adaptador LRPCI]
+[Web Admin] ──► Puerto de Entrada ──►                         ──► Puerto de Salida ──► [Adaptador Sync]
+```
+
 - **El Dominio:** (la ficha patrimonial con todos sus campos libres) vive en el núcleo, aislado.
 - **Adaptador de entrada:** recibe los datos del gestor cultural (app móvil offline).
 - **Adaptador de salida:** transforma esos datos al formato LRPCI del Ministerio.
@@ -330,11 +337,14 @@ erDiagram
 ---
 
 ## 7. Patrones de Diseño GoF Aplicados
-- **Adapter:** Para transformar la Ficha local al formato rígido LRPCI del Ministerio. (Ubicación: adaptador de salida).
-- **Strategy:** Para seleccionar qué versión del esquema LRPCI usar (el Ministerio cambia versiones). (Ubicación: dentro del adaptador LRPCI).
-- **Repository:** Para abstraer el almacenamiento local (SQLite offline) del dominio. (Ubicación: puerto de repositorio).
-- **Factory:** Creación de adaptadores según el contexto de ejecución.
-- **Observer:** Manejo de eventos de sincronización al recuperar conectividad.
+- **Adapter (Adaptador):** Se implementa para transformar la **FichaPatrimonial** local (con sus campos flexibles y particulares) al formato rígido y estandarizado **LRPCI** del Ministerio de Cultura. 
+  - **Ubicación:** Adaptador de salida.
+- **Strategy (Estrategia):** Permite seleccionar dinámicamente qué versión del esquema LRPCI utilizar, permitiendo que el sistema soporte múltiples versiones del formato del Ministerio de forma simultánea.
+  - **Ubicación:** Dentro del adaptador LRPCI.
+- **Repository (Repositorio):** Se utiliza para abstraer el almacenamiento de datos (ya sea en SQLite para el modo offline o PostgreSQL para el modo centralizado), permitiendo que el dominio permanezca agnóstico a la persistencia.
+  - **Ubicación:** Puerto de repositorio.
+- **Factory (Fábrica):** Utilizado para la creación de los adaptadores específicos según el contexto de ejecución (móvil vs web) o la versión del Ministerio requerida.
+- **Observer (Observador):** Implementado para gestionar los eventos de sincronización; cuando el sistema detecta conexión, notifica a los componentes encargados de vaciar la cola de datos local (Store & Forward).
 
 ---
 
