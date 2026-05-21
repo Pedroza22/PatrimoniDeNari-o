@@ -1,46 +1,6 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="color-scheme" content="light dark">
+
 <style>
-  :root {
-    --accent: #1a3a5c;
-    --accent2: #c8a84b;
-    --color-background-primary: #ffffff;
-    --color-background-secondary: #f8f9fa;
-    --color-text-primary: #1a1a1a;
-    --color-text-secondary: #4a4a4a;
-    --color-text-tertiary: #757575;
-    --color-border-primary: #0066cc;
-    --color-border-secondary: #e0e0e0;
-    --color-border-tertiary: #eeeeee;
-    --border-radius-md: 8px;
-    --border-radius-lg: 12px;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --color-background-primary: #1e1e1e;
-      --color-background-secondary: #2d2d2d;
-      --color-text-primary: #f0f0f0; /* Más claro para asegurar visibilidad */
-      --color-text-secondary: #cccccc;
-      --color-text-tertiary: #a0a0a0;
-      --color-border-primary: #4fc3f7;
-      --color-border-secondary: #424242;
-      --color-border-tertiary: #333333;
-    }
-  }
-
-  body {
-    background-color: var(--color-background-primary);
-    color: var(--color-text-primary);
-    font-family: "Anthropic Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    margin: 0;
-    padding: 1rem;
-    min-height: 100vh;
-  }
-
+  :root { --accent: #1a3a5c; --accent2: #c8a84b; }
   .cover { padding: 2rem 2.5rem; border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); background: var(--color-background-primary); }
   .cover-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 2rem; border-bottom: 2px solid var(--color-border-secondary); padding-bottom: 1rem; }
   .badge { background: var(--color-background-secondary); border: 0.5px solid var(--color-border-secondary); border-radius: 4px; font-size: 11px; padding: 3px 8px; color: var(--color-text-secondary); display: inline-block; margin-bottom: 6px; }
@@ -48,7 +8,7 @@
   .subtitle { font-size: 14px; color: var(--color-text-secondary); margin: 0; }
   .version-block { text-align: right; font-size: 12px; color: var(--color-text-tertiary); line-height: 1.8; }
   .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 1.5rem; }
-  .toc-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); background: var(--color-background-secondary); cursor: pointer; transition: border-color .15s; text-decoration: none; }
+  .toc-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); background: var(--color-background-secondary); cursor: pointer; transition: border-color .15s; }
   .toc-item:hover { border-color: var(--color-border-primary); }
   .toc-num { font-size: 11px; font-weight: 500; color: var(--color-text-tertiary); min-width: 20px; }
   .toc-label { font-size: 13px; color: var(--color-text-primary); }
@@ -58,8 +18,6 @@
   .meta-key { font-size: 11px; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: .05em; }
   .meta-val { font-size: 13px; color: var(--color-text-primary); font-weight: 500; }
 </style>
-</head>
-<body>
 <div class="cover">
   <div class="cover-header">
     <div>
@@ -80,38 +38,44 @@
 
   <div style="font-size:12px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">Índice de contenido</div>
   <div class="toc-grid">
-    <div class="toc-item" onclick="parent.loadArtifact('home')">
+    <div class="toc-item" onclick="sendPrompt('Explícame el análisis general del proyecto PatrimonioNariño')">
       <span class="toc-num">01</span>
-      <div><div class="toc-label">Análisis general</div><div class="toc-sub">Contexto y resumen</div></div>
+      <div><div class="toc-label">Análisis general</div><div class="toc-sub">Contexto y stakeholders</div></div>
     </div>
-    <div class="toc-item" onclick="parent.loadArtifact('c4_l1')">
+    <div class="toc-item" onclick="sendPrompt('Muéstrame los requerimientos funcionales y no funcionales de PatrimonioNariño')">
       <span class="toc-num">02</span>
-      <div><div class="toc-label">Contexto (C4 L1)</div><div class="toc-sub">Actores y sistema</div></div>
+      <div><div class="toc-label">Requerimientos</div><div class="toc-sub">Funcionales y de calidad</div></div>
     </div>
-    <div class="toc-item" onclick="parent.loadArtifact('c4_l2')">
+    <div class="toc-item" onclick="sendPrompt('Muéstrame el diagrama C4 de contexto de PatrimonioNariño')">
       <span class="toc-num">03</span>
-      <div><div class="toc-label">Contenedores (C4 L2)</div><div class="toc-sub">Apps y bases de datos</div></div>
+      <div><div class="toc-label">Modelo C4</div><div class="toc-sub">Contexto → Componentes</div></div>
     </div>
-    <div class="toc-item" onclick="parent.loadArtifact('hexagonal')">
+    <div class="toc-item" onclick="sendPrompt('Muéstrame el diagrama de componentes de PatrimonioNariño')">
       <span class="toc-num">04</span>
-      <div><div class="toc-label">Hexagonal (C4 L3)</div><div class="toc-sub">Puertos y adaptadores</div></div>
+      <div><div class="toc-label">Arquitectura hexagonal</div><div class="toc-sub">Puertos y adaptadores</div></div>
     </div>
-    <div class="toc-item" onclick="parent.loadArtifact('clases')">
+    <div class="toc-item" onclick="sendPrompt('Muéstrame el diagrama de clases de PatrimonioNariño')">
       <span class="toc-num">05</span>
-      <div><div class="toc-label">Dominio</div><div class="toc-sub">Diagrama de clases</div></div>
+      <div><div class="toc-label">Modelo de dominio</div><div class="toc-sub">Clases y relaciones</div></div>
     </div>
-    <div class="toc-item" onclick="parent.loadArtifact('secuencia')">
+    <div class="toc-item" onclick="sendPrompt('Muéstrame los diagramas de secuencia de PatrimonioNariño')">
       <span class="toc-num">06</span>
-      <div><div class="toc-label">Secuencias</div><div class="toc-sub">Flujos del sistema</div></div>
+      <div><div class="toc-label">Secuencias</div><div class="toc-sub">Flujos principales</div></div>
     </div>
-    <div class="toc-item" onclick="parent.loadArtifact('er')">
+    <div class="toc-item" onclick="sendPrompt('Muéstrame el modelo ER y el diagrama de despliegue de PatrimonioNariño')">
       <span class="toc-num">07</span>
-      <div><div class="toc-label">Modelo ER</div><div class="toc-sub">Persistencia de datos</div></div>
+      <div><div class="toc-label">Modelo ER y despliegue</div><div class="toc-sub">Datos y física</div></div>
     </div>
-    <div class="toc-item" onclick="parent.loadArtifact('adr')">
+    <div class="toc-item" onclick="sendPrompt('Muéstrame los ADR y decisiones arquitectónicas de PatrimonioNariño')">
       <span class="toc-num">08</span>
-      <div><div class="toc-label">ADR y Tech</div><div class="toc-sub">Decisiones técnicas</div></div>
+      <div><div class="toc-label">ADR y tecnologías</div><div class="toc-sub">Decisiones y stack</div></div>
     </div>
+  </div>
+
+  <div class="meta-row">
+    <div class="meta-item"><span class="meta-key">Autores</span><span class="meta-val">J. Pedroza, C. Gaviria, E. Lasso, M. Andrade</span></div>
+    <div class="meta-item"><span class="meta-key">Materia</span><span class="meta-val">Arquitectura de Software (5° Sem)</span></div>
+    <div class="meta-item"><span class="meta-key">Institución</span><span class="meta-val">UCC Campus Pasto</span></div>
   </div>
 
   <div class="meta-row">
@@ -122,14 +86,3 @@
     <div class="meta-item"><span class="meta-key">ADRs</span><span class="meta-val">3 registrados</span></div>
   </div>
 </div>
-<script>
-  function sendPrompt(text) {
-    if (parent && parent.sendPrompt) {
-      parent.sendPrompt(text);
-    } else {
-      console.log("Prompt:", text);
-    }
-  }
-</script>
-</body>
-</html>
