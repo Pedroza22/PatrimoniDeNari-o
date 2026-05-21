@@ -1,0 +1,146 @@
+
+<div id="classdiagram"></div>
+<style>
+  :root {
+    --color-text-primary: #1a1a1a;
+    --color-text-secondary: #4a4a4a;
+    --color-text-tertiary: #757575;
+    --color-border-tertiary: #eeeeee;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-text-primary: #e0e0e0;
+      --color-text-secondary: #b0b0b0;
+      --color-text-tertiary: #808080;
+      --color-border-tertiary: #333333;
+    }
+  }
+  body {
+    background-color: transparent;
+    color: var(--color-text-primary);
+    font-family: "Anthropic Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    margin: 0;
+  }
+  #classdiagram svg { width: 100%; }
+  #classdiagram svg .node rect { stroke-width: 0.5px !important; }
+</style>
+<script type="module">
+import mermaid from 'https://esm.sh/mermaid@11/dist/mermaid.esm.min.mjs';
+const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+await document.fonts.ready;
+mermaid.initialize({
+  startOnLoad: false,
+  theme: 'base',
+  fontFamily: '"Anthropic Sans", sans-serif',
+  themeVariables: {
+    darkMode: dark,
+    fontSize: '13px',
+    fontFamily: '"Anthropic Sans", sans-serif',
+    lineColor: dark ? '#9c9a92' : '#73726c',
+    textColor: dark ? '#c2c0b6' : '#3d3d3a',
+  },
+});
+const diagram = `classDiagram
+  class FichaPatrimonial {
+    +UUID id
+    +String codigoFicha
+    +String nombreManifestacion
+    +Date fechaRegistro
+    +EstadoFicha estado
+    +String observaciones
+    +Boolean sincronizada
+    +registrar()
+    +actualizar()
+    +marcarSincronizada()
+    +exportarALRPCI() DatosLRPCI
+  }
+
+  class Manifestacion {
+    +UUID id
+    +String nombre
+    +CategoriaManifestacion categoria
+    +String descripcion
+    +String comunidadPortadora
+    +String ambitoGeografico
+    +validar()
+    +obtenerCategoria() String
+  }
+
+  class Municipio {
+    +UUID id
+    +String codigoDIVIPOLA
+    +String nombre
+    +String departamento
+    +Integer poblacion
+    +obtenerFichas() List~FichaPatrimonial~
+  }
+
+  class GestorCultural {
+    +UUID id
+    +String nombres
+    +String email
+    +String municipioAsignado
+    +Rol rol
+    +registrarFicha(f: FichaPatrimonial)
+    +consultarFichas() List~FichaPatrimonial~
+  }
+
+  class IRepositorioFicha {
+    <<interface>>
+    +guardar(ficha: FichaPatrimonial)
+    +buscarPorId(id: UUID) FichaPatrimonial
+    +listarPendientesSincronizacion() List
+    +listarPorMunicipio(id: UUID) List
+  }
+
+  class IExportadorLRPCI {
+    <<interface>>
+    +exportar(ficha: FichaPatrimonial) DatosLRPCI
+    +obtenerVersion() String
+    +validarEsquema(datos: DatosLRPCI) Boolean
+  }
+
+  class AdaptadorLRPCI {
+    -version: String
+    -estrategia: IEstrategiaLRPCI
+    +exportar(ficha: FichaPatrimonial) DatosLRPCI
+    +obtenerVersion() String
+    +validarEsquema(datos: DatosLRPCI) Boolean
+    -mapearCampos(ficha: FichaPatrimonial) Dict
+  }
+
+  class IEstrategiaLRPCI {
+    <<interface>>
+    +mapear(ficha: FichaPatrimonial) DatosLRPCI
+  }
+
+  class EstrategiaLRPCIv2 {
+    +mapear(ficha: FichaPatrimonial) DatosLRPCI
+  }
+
+  class EstrategiaLRPCIv3 {
+    +mapear(ficha: FichaPatrimonial) DatosLRPCI
+  }
+
+  class DatosLRPCI {
+    +String codigoNacional
+    +String nombreOficial
+    +String categoriaMinisterio
+    +String descripcionEstandar
+    +Date fechaInscripcion
+    +String departamento
+    +String municipio
+  }
+
+  FichaPatrimonial "1" --> "1" Manifestacion : describe
+  FichaPatrimonial "many" --> "1" Municipio : pertenece a
+  FichaPatrimonial "many" --> "1" GestorCultural : registrada por
+  AdaptadorLRPCI ..|> IExportadorLRPCI : implementa
+  AdaptadorLRPCI --> IEstrategiaLRPCI : usa
+  EstrategiaLRPCIv2 ..|> IEstrategiaLRPCI
+  EstrategiaLRPCIv3 ..|> IEstrategiaLRPCI
+  AdaptadorLRPCI --> DatosLRPCI : produce
+`;
+const { svg } = await mermaid.render('class-svg', diagram);
+document.getElementById('classdiagram').innerHTML = svg;
+</script>

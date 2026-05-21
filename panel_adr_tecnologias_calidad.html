@@ -1,0 +1,173 @@
+
+<style>
+  :root {
+    --color-background-primary: #ffffff;
+    --color-background-secondary: #f8f9fa;
+    --color-background-info: #e7f3ff;
+    --color-background-warning: #fff8e1;
+    --color-background-success: #e8f5e9;
+    --color-text-primary: #1a1a1a;
+    --color-text-secondary: #4a4a4a;
+    --color-text-tertiary: #757575;
+    --color-text-info: #0066cc;
+    --color-text-warning: #f57c00;
+    --color-text-success: #2e7d32;
+    --color-text-danger: #d32f2f;
+    --color-border-primary: #0066cc;
+    --color-border-secondary: #e0e0e0;
+    --color-border-tertiary: #eeeeee;
+    --border-radius-md: 8px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-background-primary: #1e1e1e;
+      --color-background-secondary: #2d2d2d;
+      --color-background-info: #1a3a5c;
+      --color-background-warning: #3e2723;
+      --color-background-success: #1b5e20;
+      --color-text-primary: #e0e0e0;
+      --color-text-secondary: #b0b0b0;
+      --color-text-tertiary: #808080;
+      --color-text-info: #4fc3f7;
+      --color-text-warning: #ffb74d;
+      --color-text-success: #81c784;
+      --color-text-danger: #e57373;
+      --color-border-primary: #4fc3f7;
+      --color-border-secondary: #424242;
+      --color-border-tertiary: #333333;
+    }
+  }
+
+  body {
+    background-color: transparent;
+    color: var(--color-text-primary);
+    font-family: "Anthropic Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    margin: 0;
+  }
+
+  .panel { padding: 1.5rem 2rem; }
+  .section-title { font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: .07em; color: var(--color-text-tertiary); margin: 1.5rem 0 .6rem; border-bottom: 0.5px solid var(--color-border-tertiary); padding-bottom: .4rem; }
+  .adr-card { border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: .9rem 1.1rem; margin-bottom: .6rem; cursor: pointer; transition: border-color .15s; }
+  .adr-card:hover { border-color: var(--color-border-primary); }
+  .adr-head { display: flex; align-items: center; gap: 10px; margin-bottom: .4rem; }
+  .adr-badge { font-size: 11px; font-weight: 500; background: var(--color-background-info); color: var(--color-text-info); border-radius: 4px; padding: 2px 7px; }
+  .adr-badge.warn { background: var(--color-background-warning); color: var(--color-text-warning); }
+  .adr-badge.suc { background: var(--color-background-success); color: var(--color-text-success); }
+  .adr-title { font-size: 14px; font-weight: 500; color: var(--color-text-primary); }
+  .adr-body { font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; }
+  .adr-pros { color: var(--color-text-success); font-size: 12px; }
+  .adr-cons { color: var(--color-text-danger); font-size: 12px; }
+
+  .tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
+  .tech-item { border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: .7rem .9rem; }
+  .tech-layer { font-size: 10px; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: .06em; }
+  .tech-name { font-size: 14px; font-weight: 500; color: var(--color-text-primary); margin: 2px 0; }
+  .tech-why { font-size: 11px; color: var(--color-text-secondary); }
+
+  .qa-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .qa-card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: .8rem 1rem; }
+  .qa-attr { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
+  .qa-target { font-size: 22px; font-weight: 500; color: var(--color-text-info); line-height: 1.2; }
+  .qa-desc { font-size: 11px; color: var(--color-text-tertiary); margin-top: 2px; }
+
+  .pattern-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: .5rem; }
+  .pattern-chip { border: 0.5px solid var(--color-border-secondary); border-radius: 20px; padding: 4px 12px; font-size: 12px; color: var(--color-text-primary); cursor: pointer; }
+  .pattern-chip:hover { background: var(--color-background-secondary); }
+</style>
+
+<div class="panel">
+  <div class="section-title">Architecture Decision Records (ADR)</div>
+
+  <div class="adr-card" onclick="sendPrompt('Explica con detalle el ADR-001 sobre arquitectura hexagonal vs capas')">
+    <div class="adr-head">
+      <span class="adr-badge">ADR-001</span>
+      <span class="adr-title">Arquitectura hexagonal sobre capas tradicionales</span>
+    </div>
+    <div class="adr-body">Contexto: necesidad de aislar la transformación al esquema LRPCI (que cambia periódicamente) de la lógica de captura local. Decisión: puertos y adaptadores.</div>
+    <div style="margin-top:.5rem;display:flex;gap:16px;">
+      <span class="adr-pros">+ Cambios del Ministerio no tocan el dominio</span>
+      <span class="adr-cons">− Mayor complejidad inicial de diseño</span>
+    </div>
+  </div>
+
+  <div class="adr-card" onclick="sendPrompt('Explica con detalle el ADR-002 sobre almacenamiento offline con SQLite')">
+    <div class="adr-head">
+      <span class="adr-badge warn">ADR-002</span>
+      <span class="adr-title">Almacenamiento offline-first con SQLite local</span>
+    </div>
+    <div class="adr-body">Contexto: gestores trabajan en zonas rurales sin conectividad. Decisión: SQLite en dispositivo + sincronización diferida con resolución de conflictos last-write-wins.</div>
+    <div style="margin-top:.5rem;display:flex;gap:16px;">
+      <span class="adr-pros">+ 100% disponibilidad en campo</span>
+      <span class="adr-cons">− Lógica de resolución de conflictos de sync</span>
+    </div>
+  </div>
+
+  <div class="adr-card" onclick="sendPrompt('Explica con detalle el ADR-003 sobre el patrón Adapter para LRPCI')">
+    <div class="adr-head">
+      <span class="adr-badge suc">ADR-003</span>
+      <span class="adr-title">Patrón Adapter versionado para integración LRPCI</span>
+    </div>
+    <div class="adr-body">Contexto: el Ministerio actualiza periódicamente la estructura LRPCI. Decisión: un adaptador independiente por versión del esquema, seleccionado con Strategy.</div>
+    <div style="margin-top:.5rem;display:flex;gap:16px;">
+      <span class="adr-pros">+ Cambios de versión absorbidos en el adaptador</span>
+      <span class="adr-cons">− Mantener historial de versiones de adaptadores</span>
+    </div>
+  </div>
+
+  <div class="section-title">Patrones de diseño GoF aplicados</div>
+  <div class="pattern-row">
+    <div class="pattern-chip" onclick="sendPrompt('Cómo se aplica el patrón Adapter en PatrimonioNariño?')">Adapter — transformación LRPCI</div>
+    <div class="pattern-chip" onclick="sendPrompt('Cómo se aplica el patrón Strategy en PatrimonioNariño?')">Strategy — versiones del esquema</div>
+    <div class="pattern-chip" onclick="sendPrompt('Cómo se aplica el patrón Repository en PatrimonioNariño?')">Repository — abstracción de BD</div>
+    <div class="pattern-chip" onclick="sendPrompt('Cómo se aplica el patrón Factory en PatrimonioNariño?')">Factory — creación de adaptadores</div>
+    <div class="pattern-chip" onclick="sendPrompt('Cómo se aplica el patrón Observer en PatrimonioNariño?')">Observer — eventos de sync</div>
+  </div>
+
+  <div class="section-title">Stack tecnológico recomendado</div>
+  <div class="tech-grid">
+    <div class="tech-item"><div class="tech-layer">Frontend móvil</div><div class="tech-name">Flutter</div><div class="tech-why">Cross-platform, offline support, SQLite nativo</div></div>
+    <div class="tech-item"><div class="tech-layer">Frontend web</div><div class="tech-name">React + TS</div><div class="tech-why">SPA admin panel, ecosistema robusto</div></div>
+    <div class="tech-item"><div class="tech-layer">Backend API</div><div class="tech-name">FastAPI</div><div class="tech-why">Python, async, tipado, DDD-compatible</div></div>
+    <div class="tech-item"><div class="tech-layer">Base de datos</div><div class="tech-name">PostgreSQL</div><div class="tech-why">JSONB para campos libres, ACID</div></div>
+    <div class="tech-item"><div class="tech-layer">Cola de tareas</div><div class="tech-name">Celery + Redis</div><div class="tech-why">Exportaciones async sin bloquear API</div></div>
+    <div class="tech-item"><div class="tech-layer">Local DB</div><div class="tech-name">SQLite</div><div class="tech-why">Offline-first en dispositivo móvil</div></div>
+    <div class="tech-item"><div class="tech-layer">Infraestructura</div><div class="tech-name">Docker Compose</div><div class="tech-why">On-premise Gobernación, reproducible</div></div>
+    <div class="tech-item"><div class="tech-layer">Autenticación</div><div class="tech-name">OAuth2 + JWT</div><div class="tech-why">Integración SSO Gobierno Digital</div></div>
+    <div class="tech-item"><div class="tech-layer">Almacenamiento</div><div class="tech-name">MinIO / S3</div><div class="tech-why">Fotos, audio, video de evidencias</div></div>
+  </div>
+
+  <div class="section-title">Atributos de calidad (escenarios ISO 25010)</div>
+  <div class="qa-grid">
+    <div class="qa-card" onclick="sendPrompt('Cómo garantiza PatrimonioNariño disponibilidad offline total?')">
+      <div class="qa-attr">Disponibilidad</div>
+      <div class="qa-target">100%</div>
+      <div class="qa-desc">Fichas guardadas offline sin pérdida, sin importar conectividad</div>
+    </div>
+    <div class="qa-card" onclick="sendPrompt('Cómo logra el sistema que los cambios del Ministerio no rediseñen todo?')">
+      <div class="qa-attr">Modificabilidad</div>
+      <div class="qa-target">&lt; 1 sprint</div>
+      <div class="qa-desc">Cambio de esquema LRPCI absorbido solo en el adaptador</div>
+    </div>
+    <div class="qa-card" onclick="sendPrompt('Cómo garantiza PatrimonioNariño 0 rechazos por formato en el LRPCI?')">
+      <div class="qa-attr">Interoperabilidad</div>
+      <div class="qa-target">0 rechazos</div>
+      <div class="qa-desc">Exportaciones validadas contra esquema oficial antes del envío</div>
+    </div>
+    <div class="qa-card" onclick="sendPrompt('Cómo maneja PatrimonioNariño la seguridad y autenticación?')">
+      <div class="qa-attr">Seguridad</div>
+      <div class="qa-target">OAuth2</div>
+      <div class="qa-desc">JWT, TLS, RBAC por rol y municipio</div>
+    </div>
+    <div class="qa-card" onclick="sendPrompt('Qué tan escalable es la arquitectura de PatrimonioNariño?')">
+      <div class="qa-attr">Escalabilidad</div>
+      <div class="qa-target">64 mun.</div>
+      <div class="qa-desc">Horizontal en API; Celery workers escalables</div>
+    </div>
+    <div class="qa-card" onclick="sendPrompt('Cuál es el rendimiento esperado del sistema PatrimonioNariño?')">
+      <div class="qa-attr">Rendimiento</div>
+      <div class="qa-target">&lt; 2s</div>
+      <div class="qa-desc">P95 respuesta API en condición normal de operación</div>
+    </div>
+  </div>
+</div>
